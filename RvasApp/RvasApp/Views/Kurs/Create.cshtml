@@ -1,0 +1,70 @@
+﻿@model RvasApp.Models.Kurs
+@{
+    ViewData["Title"] = "Kreiraj kurs";
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h2 class="mb-4 text-center">Kreiraj novi kurs</h2>
+
+                    <form asp-action="Create" method="post">
+
+                        <div class="mb-3">
+                            <label asp-for="Naziv" class="form-label fw-bold"></label>
+                            <input asp-for="Naziv" class="form-control" placeholder="Unesi naziv kursa" />
+                            <span asp-validation-for="Naziv" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Opis" class="form-label fw-bold"></label>
+                            <textarea asp-for="Opis" class="form-control" rows="4"
+                                      placeholder="Kratak opis kursa..."></textarea>
+                            <span asp-validation-for="Opis" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DatumPocetka" class="form-label fw-bold"></label>
+                                <input asp-for="DatumPocetka" type="date" class="form-control" />
+                                <span asp-validation-for="DatumPocetka" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DatumZavrsetka" class="form-label fw-bold"></label>
+                                <input asp-for="DatumZavrsetka" type="date" class="form-control" />
+                                <span asp-validation-for="DatumZavrsetka" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="MaksimalanBrojPolaznika" class="form-label fw-bold"></label>
+                            <input asp-for="MaksimalanBrojPolaznika" type="number" class="form-control"
+                                   placeholder="npr. 20" />
+                            <span asp-validation-for="MaksimalanBrojPolaznika" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Nazad
+                            </a>
+
+                            <button type="submit" class="btn btn-primary px-4">
+                                Sacuvaj kurs
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

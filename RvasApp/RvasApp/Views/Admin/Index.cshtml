@@ -1,0 +1,106 @@
+﻿@using RvasApp.Models.ViewModels
+@model AdminPanelViewModel
+@{
+    ViewData["Title"] = "Admin panel";
+}
+
+<h1>Admin panel</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Broj korisnika</h5>
+                <p class="card-text display-6">@Model.BrojKorisnika</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Broj instruktora</h5>
+                <p class="card-text display-6">@Model.BrojInstruktora</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-light">
+            <div class="card-body">
+                <h5 class="card-title">Broj polaznika</h5>
+                <p class="card-text display-6">@Model.BrojPolaznika</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Korisnicko ime</th>
+            <th>Uloga</th>
+            <th>Opcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var korisnik in Model.Korisnici){
+            <tr>
+                <td>@korisnik.Email</td>
+                <td>@korisnik.Ime</td>
+                <td>@korisnik.Prezime</td>
+                <td>@korisnik.KorisnickoIme</td>
+                <td>
+                    @if(korisnik.Roles.Any()){
+                        @string.Join(", ",korisnik.Roles)
+                    }
+                    else{
+                        <span>Nema uloge</span>
+                    }
+                </td>
+                <td class="d-flex justify-content-center">
+                    @if (!korisnik.Roles.Contains("Instruktor"))
+                    {
+                        <form asp-action="DodeliInstruktorRolu" method="post" class="d-inline ms-1">
+                            <input type="hidden" name="korisnikId" value="@korisnik.Id">
+                            <button type="submit" class="btn btn-sm btn-success">
+                                Dodeli instruktor rolu
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="OduzmiInstruktorRolu" method="post" class="d-inline ms-1">
+                            <input type="hidden" name="korisnikId" value="@korisnik.Id">
+                            <button type="submit" class="btn btn-sm btn-warning">
+                                Oduzmi instruktor rolu
+                            </button>
+                        </form>
+                    }
+
+                    @if (!korisnik.Roles.Any())
+                    {
+                        <form asp-action="DodeliPolaznikRolu" method="post" class="d-inline ms-1">
+                            <input type="hidden" name="korisnikId" value="@korisnik.Id" />
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                Dodeli polaznik rolu
+                            </button>
+                        </form>
+                    }
+                    else if (korisnik.Roles.Contains("Polaznik"))
+                    {
+                        <form asp-action="OduzmiPolaznikRolu" method="post" class="d-inline ms-1">
+                            <input type="hidden" name="korisnikId" value="@korisnik.Id" />
+                            <button type="submit" class="btn btn-sm btn-secondary">
+                                Oduzmi polaznik rolu
+                            </button>
+                        </form>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

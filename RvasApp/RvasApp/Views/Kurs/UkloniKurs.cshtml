@@ -1,0 +1,17 @@
+﻿@model RvasApp.Models.Kurs
+@{
+    ViewData["Title"] = "Potvrdi brisanje";
+    var brojPrijavljenih = (int)(ViewBag.BrojPrijavljenih ?? 0);
+}
+
+<p>
+    Kurs pohadja @(brojPrijavljenih) polaznika
+</p>
+<p>
+    Polaznici ce biti ispisani sa kursa nakon uklanjanja!
+</p>
+
+<form asp-action="UkloniKurs" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-outline-danger">Ukloni</button>
+</form>

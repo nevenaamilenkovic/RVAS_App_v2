@@ -1,0 +1,47 @@
+@model IEnumerable<RvasApp.Models.ViewModels.InstruktorKursViewModel>
+@{
+    ViewData["Title"] = "Moji kursevi";
+}
+
+@if (!Model.Any())
+{
+    <p>Nema kurseva</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Naziv kursa</th>
+                <th>Datum pocetka</th>
+                <th>Datum zavrsetka</th>
+                <th>Broj polaznika</th>
+                <th>Opcije</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var k in Model)
+            {
+                var kurs = k.Kurs;
+                var max = kurs.MaksimalanBrojPolaznika;
+                var brojPrijavljenih = max.HasValue ? $"{k.BrojPrijavljenih}/{max}" : $"{k.BrojPrijavljenih}/-";
+                <tr>
+                    <td>@kurs.Naziv</td>
+                    <td>@(kurs.DatumPocetka?.ToString("dd.MM.yyyy") ?? "-")</td>
+                    <td>@(kurs.DatumZavrsetka?.ToString("dd.MM.yyyy")??"-")</td>
+                    <td>@brojPrijavljenih</td>
+                    <td>
+                        @if (k.BrojPrijavljenih > 0)
+                        {
+                            <a asp-action="PolazniciNaKursu" asp-route-id="@kurs.Id" class="btn btn-secondary">Spisak polaznika</a>
+                        }
+                        <a asp-controller="Kurs" asp-action="DodajLekciju" asp-route-id="@kurs.Id" class="btn btn-secondary">Dodaj lekcije</a>
+                        <a asp-controller="Kurs" asp-action="LekcijeMaterijali" asp-route-id="@kurs.Id" class="btn btn-secondary">Lekcije i materijali</a>
+                        <a asp-action="IzmeniKurs" asp-route-id="@kurs.Id" class="btn btn-secondary">Izmeni kurs</a>
+                        <a asp-action="UkloniKurs" asp-route-id="@kurs.Id" class="btn btn-danger">Ukloni kurs</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

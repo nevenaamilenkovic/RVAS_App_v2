@@ -1,0 +1,39 @@
+﻿@model RvasApp.Models.ViewModels.KursPolazniciViewModel
+@{
+    ViewData["Title"] = "Polaznici na kursu";
+}
+<h1>Polaznicii</h1>
+<p class="lead">Kurs: @Model.Kurs.Naziv</p>
+
+<p>
+    <a asp-action="MojiKursevi" class="btn btn-outline-secondary">Nazad na moje kurseve</a>
+</p>
+
+@if (!Model.Polaznici.Any())
+{
+    <p>Nema prijavljenih polaznika</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m=>m.Polaznici.First().Ime)</th>
+                <th>@Html.DisplayNameFor(m=>m.Polaznici.First().Prezime)</th>
+                <th>@Html.DisplayNameFor(m=>m.Polaznici.First().Email)</th>
+                <th>@Html.DisplayNameFor(m=>m.Polaznici.First().DatumPrijave)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var p in Model.Polaznici)
+            {
+                <tr>
+                    <td>@(string.IsNullOrWhiteSpace(p.Ime)?"/":p.Ime)</td>
+                    <td>@(string.IsNullOrWhiteSpace(p.Prezime)?"/":p.Prezime)</td>
+                    <td>@(string.IsNullOrWhiteSpace(p.Email)?"/":p.Email)</td>
+                    <td>@p.DatumPrijave.ToLocalTime().ToString("dd.MM.yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

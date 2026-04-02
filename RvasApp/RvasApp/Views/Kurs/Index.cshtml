@@ -1,0 +1,57 @@
+﻿@model IEnumerable<RvasApp.Models.Kurs>
+@{
+    ViewData["Title"] = "Svi kursevi";
+}
+
+<h1>Dostupni kursevi</h1>
+
+@if (User.IsInRole("Instruktor"))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">Kreiraj kurs</a>
+}
+
+@if (!Model.Any())
+{
+    <p>Nema kurseva</p>
+}
+else
+{
+    //da ne bude bas sve po tabelama :D
+    <div class="row">
+        @foreach (var kurs in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@kurs.Naziv</h5>
+
+                        <p class="card-text">
+                            <strong>Instruktor:</strong><br />
+                            @kurs.Instruktor.Ime @kurs.Instruktor.Prezime
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Pocetak:</strong> @(kurs.DatumPocetka?.ToString("dd.MM.yyyy") ?? "-")<br />
+                            <strong>Zavrsetak:</strong> @(kurs.DatumZavrsetka?.ToString("dd.MM.yyyy") ?? "-")
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Max polaznika:</strong>
+                            @(kurs.MaksimalanBrojPolaznika?.ToString() ?? "-")
+                        </p>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-action="Details"
+                           asp-route-id="@kurs.Id"
+                           class="btn btn-outline-primary w-100">
+                            Pogledaj detalje
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}
