@@ -1,0 +1,198 @@
+﻿.courses-page {
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 50%);
+    border: 1px solid #e8eef5;
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 18px 40px -28px rgba(21, 34, 50, 0.45);
+}
+
+.courses-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.courses-title {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2a37;
+}
+
+.courses-subtitle {
+    margin: 0.35rem 0 0;
+    color: #64748b;
+}
+
+.create-course-btn {
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+}
+
+.empty-courses {
+    border: 1px dashed #cbd5e1;
+    background: #f8fafc;
+    color: #475569;
+    border-radius: 14px;
+    padding: 1.1rem;
+    margin: 0;
+}
+
+.course-grid {
+    row-gap: 0.9rem;
+}
+
+.course-card {
+    border: 1px solid #e5eaf2;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -24px rgba(15, 23, 42, 0.9);
+}
+
+.course-card .card-body {
+    padding: 1.1rem 1.1rem 0.85rem;
+}
+
+.course-name {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.95rem;
+}
+
+.course-meta {
+    margin-bottom: 0.7rem;
+    color: #334155;
+    font-size: 0.92rem;
+}
+
+.course-meta strong {
+    color: #0f172a;
+}
+
+.course-card .card-footer {
+    padding: 0 1.1rem 1.05rem;
+}
+
+.course-card .btn {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.course-details-page {
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 50%);
+    border: 1px solid #e8eef5;
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 18px 40px -28px rgba(21, 34, 50, 0.45);
+}
+
+.details-main-card,
+.lessons-card,
+.details-side-card {
+    background: #ffffff;
+    border: 1px solid #e7edf5;
+    border-radius: 14px;
+    padding: 1.2rem;
+}
+
+.details-label {
+    margin: 0 0 0.35rem;
+    font-size: 0.83rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.details-title {
+    margin: 0;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.details-instructor {
+    margin: 0.65rem 0 0;
+    color: #475569;
+}
+
+.details-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 1rem 0;
+}
+
+.details-section-title {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.details-description {
+    margin-bottom: 0;
+    color: #334155;
+    white-space: pre-wrap;
+}
+
+.lessons-accordion .accordion-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+}
+
+.lessons-accordion .accordion-button {
+    font-weight: 600;
+}
+
+.lessons-accordion .accordion-button:not(.collapsed) {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.lesson-content {
+    white-space: pre-wrap;
+    color: #334155;
+}
+
+.material-list .list-group-item {
+    border-radius: 10px;
+    margin-bottom: 0.4rem;
+    border: 1px solid #e2e8f0;
+}
+
+.side-title {
+    margin-bottom: 0.9rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.info-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.75rem;
+}
+
+.info-label {
+    font-size: 0.82rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.info-value {
+    color: #1e293b;
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.details-side-card .btn {
+    border-radius: 10px;
+    font-weight: 600;
+}
