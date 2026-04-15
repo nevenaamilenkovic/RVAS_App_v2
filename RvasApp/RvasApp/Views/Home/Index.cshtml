@@ -2,7 +2,108 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .home-page {
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 55%);
+        border: 1px solid #e8eef5;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 18px 40px -28px rgba(21, 34, 50, 0.45);
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 1.8rem;
+    }
+
+    .hero-title {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    .hero-subtitle {
+        margin: 0.75rem auto 0;
+        max-width: 760px;
+        color: #475569;
+        font-size: 1.04rem;
+    }
+
+    .hero-actions {
+        margin-top: 1.2rem;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+
+    .hero-actions .btn {
+        border-radius: 10px;
+        padding: 0.55rem 1rem;
+        font-weight: 600;
+    }
+
+    .home-features {
+        margin-top: 1.3rem;
+    }
+
+    .feature-card {
+        background: #fff;
+        border: 1px solid #e6ecf3;
+        border-radius: 14px;
+        padding: 1.15rem;
+        height: 100%;
+    }
+
+    .feature-title {
+        margin: 0;
+        font-size: 1.02rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .feature-text {
+        margin: 0.55rem 0 0;
+        color: #475569;
+        font-size: 0.94rem;
+    }
+</style>
+
+<div class="home-page">
+    <section class="hero">
+        <h1 class="hero-title">Dobrodosli na ASP.NET CORE projekat sa RVAS vezbi xD</h1>
+        <p class="hero-subtitle">
+            Platforma je prilagodjena administratorima, instruktorima i polaznicima.
+        </p>
+
+        <div class="hero-actions">
+            <a asp-controller="Kurs" asp-action="Index" class="btn btn-primary">Pogledaj kurseve</a>
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-outline-secondary">Moj nalog</a>
+            }
+            else
+            {
+                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-secondary">Prijavi se</a>
+            }
+        </div>
+    </section>
+
+    <section class="home-features">
+        <div class="row g-3">
+            <div class="col-12 col-md-4">
+                <article class="feature-card">
+                    <h2 class="feature-title">Kursevi</h2>
+                    <p class="feature-text">Pregled dostupnih kurseva, detalja i rokova na jednom mestu.</p>
+                </article>
+            </div>
+            <div class="col-12 col-md-4">
+                <article class="feature-card">
+                    <h2 class="feature-title">Lekcije i materijali</h2>
+                    <p class="feature-text">Brz pristup lekcijama i materijalima za upisane polaznike.</p>
+                </article>
+            </div>
+        </div>
+    </section>
 </div>
