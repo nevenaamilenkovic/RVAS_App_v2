@@ -3,45 +3,65 @@
     ViewData["Title"] = "Moji kursevi";
 }
 
-@if (!Model.Any())
-{
-    <p>Nema kurseva</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/kurs.css" asp-append-version="true" />
 }
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Naziv kursa</th>
-                <th>Datum pocetka</th>
-                <th>Datum zavrsetka</th>
-                <th>Broj polaznika</th>
-                <th>Opcije</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var k in Model)
-            {
-                var kurs = k.Kurs;
-                var max = kurs.MaksimalanBrojPolaznika;
-                var brojPrijavljenih = max.HasValue ? $"{k.BrojPrijavljenih}/{max}" : $"{k.BrojPrijavljenih}/-";
-                <tr>
-                    <td>@kurs.Naziv</td>
-                    <td>@(kurs.DatumPocetka?.ToString("dd.MM.yyyy") ?? "-")</td>
-                    <td>@(kurs.DatumZavrsetka?.ToString("dd.MM.yyyy")??"-")</td>
-                    <td>@brojPrijavljenih</td>
-                    <td>
-                        @if (k.BrojPrijavljenih > 0)
-                        {
-                            <a asp-action="PolazniciNaKursu" asp-route-id="@kurs.Id" class="btn btn-secondary">Spisak polaznika</a>
-                        }
-                        <a asp-controller="Kurs" asp-action="DodajLekciju" asp-route-id="@kurs.Id" class="btn btn-secondary">Dodaj lekcije</a>
-                        <a asp-controller="Kurs" asp-action="LekcijeMaterijali" asp-route-id="@kurs.Id" class="btn btn-secondary">Lekcije i materijali</a>
-                        <a asp-action="IzmeniKurs" asp-route-id="@kurs.Id" class="btn btn-secondary">Izmeni kurs</a>
-                        <a asp-action="UkloniKurs" asp-route-id="@kurs.Id" class="btn btn-danger">Ukloni kurs</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+
+<div class="my-courses-page">
+    <div class="my-courses-header">
+        <div>
+            <h1 class="my-courses-title">Moji kursevi</h1>
+            <p class="my-courses-subtitle">Upravljanje tvojim kursevima, lekcijama i polaznicima.</p>
+        </div>
+        <span class="badge text-bg-primary my-courses-count">Ukupno: @Model.Count()</span>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="empty-courses">Trenutno nemas kreiranih kurseva.</p>
+    }
+    else
+    {
+        <div class="table-responsive my-courses-table-wrap">
+            <table class="table table-hover my-courses-table">
+                <thead>
+                    <tr>
+                        <th>Naziv kursa</th>
+                        <th>Datum pocetka</th>
+                        <th>Datum zavrsetka</th>
+                        <th>Broj polaznika</th>
+                        <th class="text-center">Opcije</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var k in Model)
+                    {
+                        var kurs = k.Kurs;
+                        var max = kurs.MaksimalanBrojPolaznika;
+                        var brojPrijavljenih = max.HasValue ? $"{k.BrojPrijavljenih}/{max}" : $"{k.BrojPrijavljenih}/-";
+                        <tr>
+                            <td class="fw-semibold">@kurs.Naziv</td>
+                            <td>@(kurs.DatumPocetka?.ToString("dd.MM.yyyy") ?? "-")</td>
+                            <td>@(kurs.DatumZavrsetka?.ToString("dd.MM.yyyy") ?? "-")</td>
+                            <td>
+                                <span class="participants-pill">@brojPrijavljenih</span>
+                            </td>
+                            <td>
+                                <div class="my-courses-actions">
+                                    @if (k.BrojPrijavljenih > 0)
+                                    {
+                                        <a asp-action="PolazniciNaKursu" asp-route-id="@kurs.Id" class="btn btn-sm btn-outline-secondary">Spisak polaznika</a>
+                                    }
+                                    <a asp-controller="Kurs" asp-action="DodajLekciju" asp-route-id="@kurs.Id" class="btn btn-sm btn-outline-primary">Dodaj lekcije</a>
+                                    <a asp-controller="Kurs" asp-action="LekcijeMaterijali" asp-route-id="@kurs.Id" class="btn btn-sm btn-outline-primary">Lekcije i materijali</a>
+                                    <a asp-action="IzmeniKurs" asp-route-id="@kurs.Id" class="btn btn-sm btn-outline-dark">Izmeni kurs</a>
+                                    <a asp-action="UkloniKurs" asp-route-id="@kurs.Id" class="btn btn-sm btn-danger">Ukloni kurs</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

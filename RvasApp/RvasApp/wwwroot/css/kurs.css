@@ -196,3 +196,83 @@
     border-radius: 10px;
     font-weight: 600;
 }
+
+.my-courses-page {
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 50%);
+    border: 1px solid #e8eef5;
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 18px 40px -28px rgba(21, 34, 50, 0.45);
+}
+
+.my-courses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+}
+
+.my-courses-title {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2a37;
+}
+
+.my-courses-subtitle {
+    margin: 0.4rem 0 0;
+    color: #64748b;
+}
+
+.my-courses-count {
+    border-radius: 10px;
+    padding: 0.45rem 0.7rem;
+    font-weight: 600;
+}
+
+.my-courses-table-wrap {
+    border: 1px solid #e7edf5;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.my-courses-table {
+    margin-bottom: 0;
+}
+
+.my-courses-table thead th {
+    border-bottom: 0;
+    color: #64748b;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.35px;
+    white-space: nowrap;
+}
+
+.my-courses-table tbody td {
+    vertical-align: middle;
+}
+
+.participants-pill {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #334155;
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.my-courses-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+}
+
+.my-courses-actions .btn {
+    border-radius: 9px;
+    font-weight: 600;
+}
