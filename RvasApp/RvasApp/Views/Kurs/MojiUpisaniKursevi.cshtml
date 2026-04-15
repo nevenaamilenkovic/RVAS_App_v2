@@ -1,0 +1,57 @@
+﻿@model IEnumerable<RvasApp.Models.Kurs>
+@{
+    ViewData["Title"] = "Moji upisani kursevi";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/kurs.css" asp-append-version="true" />
+}
+
+<div class="courses-page">
+    <div class="courses-header">
+        <div>
+            <h1 class="courses-title">Moji upisani kursevi</h1>
+            <p class="courses-subtitle">Kursevi na koje ste trenutno upisani.</p>
+        </div>
+        <span class="badge text-bg-primary">Ukupno: @Model.Count()</span>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="empty-courses">Trenutno niste upisani ni na jedan kurs.</p>
+    }
+    else
+    {
+        <div class="row course-grid">
+            @foreach (var kurs in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <h5 class="course-name">@kurs.Naziv</h5>
+
+                            <p class="course-meta">
+                                <strong>Instruktor:</strong><br />
+                                @kurs.Instruktor.Ime @kurs.Instruktor.Prezime
+                            </p>
+
+                            <p class="course-meta">
+                                <strong>Pocetak:</strong> @(kurs.DatumPocetka?.ToString("dd.MM.yyyy") ?? "-")<br />
+                                <strong>Zavrsetak:</strong> @(kurs.DatumZavrsetka?.ToString("dd.MM.yyyy") ?? "-")
+                            </p>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0 d-flex gap-2">
+                            <a asp-action="Details" asp-route-id="@kurs.Id" class="btn btn-outline-secondary w-50">
+                                Detalji
+                            </a>
+                            <a asp-action="DetaljiUpisanogKursa" asp-route-id="@kurs.Id" class="btn btn-primary w-50">
+                                Sadrzaj kursa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

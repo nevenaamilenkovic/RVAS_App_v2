@@ -47,6 +47,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Kurs" asp-action="MojiKursevi">Moji kursevi</a>
                             </li>
                         }
+                        @if (User.IsInRole("Polaznik"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Kurs" asp-action="MojiUpisaniKursevi">Moji upisani kursevi</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

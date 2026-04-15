@@ -57,9 +57,7 @@ namespace RvasApp.Controllers
                 return NotFound();
 
             var kurs = await _context.Kursevi
-                .Include(k => k.Instruktor)
-                .Include(k => k.Lekcije)
-                    .ThenInclude(l => l.Materijali)
+                .Include(k => k.Instruktor)//izbacene lekcije i materijali zbog vezbe 1 t7
                 .FirstOrDefaultAsync(k => k.Id == id.Value);
             if (kurs == null)
                 return NotFound();
@@ -76,6 +74,56 @@ namespace RvasApp.Controllers
 
             return View(kurs);
 
+        }
+
+        //resena vezba 1 sa termina 7
+        [Authorize(Roles = nameof(Roles.Polaznik))]
+        public async Task<IActionResult> MojiUpisaniKursevi()
+        {
+            var polaznikId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(polaznikId))
+                return RedirectToAction(nameof(Index));
+
+            var kursevi = await _context.Prijave
+                .AsNoTracking()
+                .Where(p => p.PolaznikId == polaznikId)
+                .Include(p => p.Kurs)
+                    .ThenInclude(k => k.Instruktor)
+                .OrderBy(p => p.Kurs.Naziv)
+                .Select(p => p.Kurs)
+                .ToListAsync();
+
+            return View(kursevi);
+        }
+
+        [Authorize(Roles = nameof(Roles.Polaznik))]
+        public async Task<IActionResult> DetaljiUpisanogKursa(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var polaznikId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(polaznikId))
+                return RedirectToAction(nameof(Index));
+
+            var jePrijavljen = await _context.Prijave
+                .AsNoTracking()
+                .AnyAsync(p => p.KursId == id.Value && p.PolaznikId == polaznikId);
+
+            if (!jePrijavljen)
+                return Forbid();
+
+            var kurs = await _context.Kursevi
+                .AsNoTracking()
+                .Include(k => k.Instruktor)
+                .Include(k => k.Lekcije)
+                    .ThenInclude(l => l.Materijali)
+                .FirstOrDefaultAsync(k => k.Id == id.Value);
+
+            if (kurs == null)
+                return NotFound();
+
+            return View(kurs);
         }
 
         [HttpPost]
@@ -302,7 +350,7 @@ namespace RvasApp.Controllers
         [Authorize(Roles = nameof(Roles.Instruktor))]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DodajLekciju(int id,[Bind("Naziv,Sadrzaj")] Lekcija lekcija)
+        public async Task<IActionResult> DodajLekciju(int id, [Bind("Naziv,Sadrzaj")] Lekcija lekcija)
         {
             lekcija.KursId = id;
             if (!ModelState.IsValid)
