@@ -11,7 +11,7 @@ namespace RvasApp.Models
         [Display(Name ="Naziv kursa")]
         public string Naziv { get; set; }
 
-        [StringLength(525, ErrorMessage = "Opis kursa moze sadrzati najvise 525 karaktera")]
+        //[StringLength(525, ErrorMessage = "Opis kursa moze sadrzati najvise 525 karaktera")]
         [Display(Name = "Opis kursa")]
         public string? Opis { get; set; }
         [Display(Name = "Datum pocetka kursa")]

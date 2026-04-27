@@ -50,7 +50,12 @@ app.MapRazorPages()
 
 using (var scope = app.Services.CreateScope())
 {
+    var servisi = scope.ServiceProvider;
+    var context =servisi.GetRequiredService<ApplicationDbContext>();
+    var userManager = servisi.GetRequiredService<UserManager<Korisnik>>();
+
     await DbSeeder.SeedRolesAsync(scope.ServiceProvider);
+    await DbSeeder.SeedKursAsync(context,userManager);
 }
 
 app.Run();
