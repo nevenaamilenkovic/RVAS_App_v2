@@ -2,7 +2,7 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Prijava";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <label asp-for="Input.Password" class="form-label">Lozinka</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="checkbox mb-3">
@@ -47,7 +47,7 @@
         </section>
     </div>
     <div class="col-md-6 col-md-offset-2">
-        <section>
+        @* <section>
             <h3>Use another service to log in.</h3>
             <hr />
             @{
@@ -74,7 +74,7 @@
                     </form>
                 }
             }
-        </section>
+        </section> *@
     </div>
 </div>
 
