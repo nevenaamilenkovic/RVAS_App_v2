@@ -5,7 +5,9 @@ using RvasApp.Data;
 using RvasApp.Konstante;
 using RvasApp.Models;
 using RvasApp.Models.ViewModels;
+using System.Globalization;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RvasApp.Controllers
 {
@@ -19,14 +21,63 @@ namespace RvasApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        //sortiranje, filtriranje, paginacija
+        public async Task<IActionResult> Index(int page = 1, string? pretraga=null,string? instruktor=null, string? sort =null)
         {
-            var kursevi = await _context.Kursevi
-                .Include(k => k.Instruktor)
-                .OrderBy(k => k.Naziv)
+            //9 kurseva po stranici
+            const int pageSize = 9;
+            var kursevi = _context.Kursevi
+                .Include(k=>k.Instruktor)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pretraga))
+            {
+                var pretragaPoNazivu = pretraga.Trim();
+                kursevi = kursevi.Where(k => k.Naziv.Contains(pretragaPoNazivu));
+                pretraga= pretragaPoNazivu;
+            }
+
+            if (!string.IsNullOrWhiteSpace(instruktor))
+            {
+                var instruktorNaKursu = instruktor.Trim();
+                kursevi = kursevi.Where(k => k.Instruktor != null &&
+                                         (((k.Instruktor.Ime ?? string.Empty) + " " + (k.Instruktor.Prezime ?? string.Empty)).Contains(instruktorNaKursu) ||
+                                          (k.Instruktor.Ime ?? string.Empty).Contains(instruktorNaKursu) ||
+                                          (k.Instruktor.Prezime ?? string.Empty).Contains(instruktorNaKursu)));
+                instruktor = instruktorNaKursu;
+            }
+
+            sort = string.IsNullOrWhiteSpace(sort) ? "naziv_asc" : sort;
+            kursevi = sort switch
+            {
+                "naziv_desc" => kursevi.OrderByDescending(k => k.Naziv),
+                "datum_asc" => kursevi.OrderBy(k => k.DatumPocetka),
+                "datum_desc" => kursevi.OrderByDescending(k => k.DatumPocetka),
+                "max_asc" => kursevi.OrderBy(k => k.MaksimalanBrojPolaznika),
+                "max_desc" => kursevi.OrderByDescending(k => k.MaksimalanBrojPolaznika),
+                _ => kursevi.OrderBy(k => k.Naziv)//default
+            };
+
+            var ukupnoKurseva = await kursevi.CountAsync();
+            var ukupnoStranica = (int)Math.Ceiling(ukupnoKurseva / (double)pageSize);
+
+            if (ukupnoStranica > 0 && page > ukupnoStranica)
+                page = ukupnoStranica;
+            if (page < 1)
+                page = 1;
+
+            var stranicenje = await kursevi
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
-            return View(kursevi);
+            ViewBag.TrenutnaStranica = page;
+            ViewBag.UkupnoStranica = ukupnoStranica;
+            ViewBag.Pretraga = pretraga;
+            ViewBag.Instruktor = instruktor;
+            ViewBag.Sort = sort;
+
+            return View(stranicenje);
         }
 
         [Authorize(Roles = nameof(Roles.Instruktor))]

@@ -1,6 +1,11 @@
 ﻿@model IEnumerable<RvasApp.Models.Kurs>
 @{
     ViewData["Title"] = "Svi kursevi";
+    var trenutnaStranica = ViewBag.TrenutnaStranica as int? ?? 1;
+    var ukupnoStranica = ViewBag.UkupnoStranica as int? ?? 0;
+    var pretraga = ViewBag.Pretraga as string ?? string.Empty;
+    var instruktor = ViewBag.Instruktor as string ?? string.Empty;
+    var sort = ViewBag.Sort as string ?? "naziv_asc";
 }
 
 @section Styles {
@@ -20,9 +25,39 @@
         }
     </div>
 
+    <form asp-action="Index" method="get" class="courses-filter mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-lg-4">
+                <label for="searchTerm" class="form-label mb-1">Naziv kursa</label>
+                <input id="searchTerm" name="pretraga" value="@pretraga" class="form-control" placeholder="Pretraga po nazivu..." />
+            </div>
+            <div class="col-12 col-lg-4">
+                <label for="instructor" class="form-label mb-1">Instruktor</label>
+                <input id="instructor" name="instruktor" value="@instruktor" class="form-control" placeholder="Ime ili prezime instruktora..." />
+            </div>
+            <div class="col-12 col-lg-3">
+                <label for="sortBy" class="form-label mb-1">Sortiranje</label>
+                <select id="sortBy" name="sort" class="form-select">
+                    <option value="naziv_asc" selected="@(sort == "naziv_asc")">Naziv (A-Z)</option>
+                    <option value="naziv_desc" selected="@(sort == "naziv_desc")">Naziv (Z-A)</option>
+                    <option value="datum_asc" selected="@(sort == "datum_asc")">Datum pocetka (rastuce)</option>
+                    <option value="datum_desc" selected="@(sort == "datum_desc")">Datum pocetka (opadajuce)</option>
+                    <option value="max_asc" selected="@(sort == "max_asc")">Max polaznika (rastuce)</option>
+                    <option value="max_desc" selected="@(sort == "max_desc")">Max polaznika (opadajuce)</option>
+                </select>
+            </div>
+            <div class="col-12 col-lg-1 d-grid">
+                <button type="submit" class="btn btn-outline-primary">Primeni</button>
+            </div>
+        </div>
+        <div class="mt-2">
+            <a asp-action="Index" class="btn btn-link btn-sm p-0">Reset filtera</a>
+        </div>
+    </form>
+
     @if (!Model.Any())
     {
-        <p class="empty-courses">Trenutno nema dostupnih kurseva.</p>
+        <p class="empty-courses">Nema kurseva za zadate kriterijume.</p>
     }
     else
     {
@@ -36,7 +71,7 @@
 
                             <p class="course-meta">
                                 <strong>Instruktor:</strong><br />
-                                @kurs.Instruktor.Ime @kurs.Instruktor.Prezime
+                                @(kurs.Instruktor is null ? "-" : $"{kurs.Instruktor.Ime} {kurs.Instruktor.Prezime}")
                             </p>
 
                             <p class="course-meta">
@@ -51,8 +86,8 @@
 
                         <div class="card-footer bg-transparent border-0">
                             <a asp-action="Details"
-                               asp-route-id="@kurs.Id"
-                               class="btn btn-outline-primary w-100">
+                                   asp-route-id="@kurs.Id"
+                                   class="btn btn-outline-primary w-100">
                                 Pogledaj detalje
                             </a>
                         </div>
@@ -60,5 +95,42 @@
                 </div>
             }
         </div>
+
+        @if (ukupnoStranica > 1)
+        {
+            <nav aria-label="Paginacija kurseva" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(trenutnaStranica == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@(trenutnaStranica - 1)"
+                           asp-route-pretraga="@pretraga"
+                           asp-route-instruktor="@instruktor"
+                           asp-route-sort="@sort">Prethodna</a>
+                    </li>
+
+                    @for (int i = 1; i <= ukupnoStranica; i++)
+                    {
+                        <li class="page-item @(i == trenutnaStranica ? "active" : "")">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-page="@i"
+                               asp-route-pretraga="@pretraga"
+                               asp-route-instruktor="@instruktor"
+                               asp-route-sort="@sort">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(trenutnaStranica == ukupnoStranica ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-page="@(trenutnaStranica + 1)"
+                           asp-route-pretraga="@pretraga"
+                           asp-route-instruktor="@instruktor"
+                           asp-route-sort="@sort">Sledeca</a>
+                    </li>
+                </ul>
+            </nav>
+        }
     }
 </div>
